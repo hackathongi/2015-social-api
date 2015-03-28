@@ -12,7 +12,7 @@ $__allowed_providers = array(
  * DB
  *******************************************************************************/
 
-define('DB_HOST',       '127.0.0.1');
+define('DB_HOST',       'mysql');
 define('DB_NAME',       'Hackajobs');
-define('DB_USER',       'root');
-define('DB_PASSWORD',   'gegumi');
+define('DB_USER',       'hackajob');
+define('DB_PASSWORD',   'uiyr683d');
