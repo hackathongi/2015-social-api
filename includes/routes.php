@@ -120,11 +120,55 @@
             $app->response->body(json_encode($response));
         }
     });
+	
+	/**
+	 * Tornar la info de l'usuari
+	 */
+	$app->get('/info-social/:provider/:userId', function ($provider, $user_id)  use ($app){
+        global $oauthConf;
+        if (is_allowed_provider($provider))
+        {
+            $db = new DB();
+            $user = $db->getUserBySocialId($user_id);
+            if ($user)
+            {
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->body(json_encode($user));
+            }
+            else
+            {
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(500);
+                $response = array(
+                  'message' => 'Unknown user',
+                  'code' 		=> 500,
+                );
+                $app->response->body(json_encode($response));
+            }
+        }
+        else {
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(500);
+            $response = array(
+              'message' => 'Unknown provider',
+              'code' 		=> 500,
+            );
+            $app->response->body(json_encode($response));
+        }
+    });
 
 	/**
 	 * Tornar els amics de l'usuari
 	 */
-	$app->get('/friends/:provider/:userId/:userIdRel', function ($provider, $userId, $userIdRel) use ($app){});
+    $app->get('/friends/:provider/', function ($provider) use ($app){
+        global $oauthConf;
+        $hybridauth = new Hybrid_Auth( $oauthConf );
+        $facebook = $hybridauth->authenticate( $provider );
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        $app->response->body(json_encode($facebook->getUserContacts()));
+    });
 
     /**
      * Inserta la info a l'stream de lusuari
