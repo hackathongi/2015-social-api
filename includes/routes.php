@@ -72,7 +72,7 @@
 	    $parseUrl = parse_url($urlOK);
 	 
 			if(isset($parseUrl['query'])) {
-				$urlOk .= '&';
+				$urlOK .= '&';
 			}
 			else {
 				$urlOK .= '?';
