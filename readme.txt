@@ -2,7 +2,7 @@
 
 API XARXES SOCIALS
 *Nota: Entre claudàtors [] els paràmetres que no són obligatoris
-
+URL BASE: apisocial.wallyjobs.com
 
 Mètode: 	POST 
 URL: 		/login
