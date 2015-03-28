@@ -10,13 +10,6 @@ define('DB_NAME',       'hackajobs');
 define('DB_USER',       'root');
 define('DB_PASSWORD',   '');
 
-/*******************************************************************************
- * FACEBOOK
- *******************************************************************************/
-
-define('FB_APP_ID', '898845680138958');
-define('FB_APP_SECRET', 'fcd7c90480cfcbe5cb5671fc5c9ff281');
-
 // ----------------------------------------------------------------------------------------
 //	HybridAuth Config file: http://hybridauth.sourceforge.net/userguide/Configuration.html
 // ----------------------------------------------------------------------------------------
@@ -28,8 +21,8 @@ $oauthConf = array(
         'Facebook' => array (
             'enabled' => true,
             'keys'    => array(
-                'id' => FB_APP_ID,
-                'secret' => FB_APP_SECRET
+                'id' => '898845680138958',
+                'secret' => 'fcd7c90480cfcbe5cb5671fc5c9ff281'
             ),
             'trustForwarded' => false
         ),
