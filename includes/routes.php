@@ -59,7 +59,16 @@
 	/**
 	 * Tornar la info de l'usuari
 	 */
-	$app->get('/info/:provider/:userId', function ($provider, $userId) use ($app){});
+	$app->get('/info/:provider/:userId', function ($provider, $userId)  use ($app){
+        
+        if (is_allowed_provider($provider)) {
+            $oauthConf = get_oauth_conf();
+        }
+        else {
+            
+        }
+        exit;
+    });
 
 	/**
 	 * Tornar els amics de l'usuari

@@ -11,6 +11,7 @@ $oauthConf = include dirname(__FILE__) . '/vendor/hybridauth/config.php';
 $app = new \Slim\Slim();
 
 // Includes de la plataforma
+require_once(dirname(__FILE__) . '/includes/functions.php');
 require_once(dirname(__FILE__) . '/includes/db.php');
 require_once(dirname(__FILE__) . '/includes/routes.php');
 
