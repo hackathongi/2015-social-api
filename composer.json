@@ -1,0 +1,19 @@
+{
+  "name" : "hackaton Girona",
+  "description" : "Grup de la api de facebook",
+  "require": {
+  	"php": ">=5.2.0",
+    "ext-curl": "*",
+    "slim/slim": "2.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Hybrid": "lib/hybridauth/",
+      "Medoo": "lib/medoo/"
+    },
+    "classmap":[
+      "lib/hybridauth/Hybrid",
+      "lib/medoo"
+    ]
+  }
+}
