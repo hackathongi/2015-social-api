@@ -37,6 +37,9 @@ Parametres:
 			<provider> 	-> Xarxa social (Opcions: facebook, twitter, linkedin). *En la primera fase només facebook
 
 
+
+== NOT IMPLEMENTED ==
+
 Mètode: 	POST 
 URL: 		/stream
 Descripció: Publica un missatge en el mur de l'usuari. Si es dona un segon id, es publica en el mur de l'amic.
