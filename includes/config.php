@@ -14,5 +14,5 @@ $__allowed_providers = array(
 
 define('DB_HOST',       'mysql');
 define('DB_NAME',       'Hackajobs');
-define('DB_USER',       'HACKAJOB');
-define('DB_PASSWORD',   'uiyR683d');
+define('DB_USER',       'hackajob');
+define('DB_PASSWORD',   'uiyr683d');
