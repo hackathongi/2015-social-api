@@ -48,7 +48,7 @@
     $user_profile = $adapter->getUserProfile();
 
     if(empty($user_profile)) {
-    	$app->redirect($params['urlKO']);
+    	$app->redirect(urldecode($params['urlKO']));
     }
     else {
     	$db = new DB();
