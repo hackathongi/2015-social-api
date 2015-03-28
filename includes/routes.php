@@ -69,6 +69,9 @@
       }
 
       $urlOK = urldecode($params['urlOK']);
+      if(empty($urlOK)) {
+      	$app->redirect($_SERVER['HTTP_REFERER'].'id='. $existUser['id']);
+      }
 	    $parseUrl = parse_url($urlOK);
 	 
 			if(isset($parseUrl['query'])) {
