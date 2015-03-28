@@ -37,48 +37,61 @@
 	 * Login a facebook
 	 */
 	$app->get('/login/:provider', function ($provider) use ($app) {
-	  global $oauthConf;
+        global $oauthConf;
+        if (is_allowed_provider($provider))
+        {
+            $params = $app->request()->params();
+            $hybridauth = new Hybrid_Auth( $oauthConf );
+            $adapter = $hybridauth->authenticate( $provider );
+            $user_profile = $adapter->getUserProfile();
+            if(empty($user_profile))
+            {
+                $app->redirect(urldecode($params['urlKO']));
+            }
+            else
+            {
+                $db = new DB();
 
-	  $provider = 'Facebook';
-	  $params = $app->request()->params();
- 
-    $hybridauth = new Hybrid_Auth( $oauthConf );
-    $adapter = $hybridauth->authenticate( $provider );
-    $user_profile = $adapter->getUserProfile();
+                // Busquem si ja existeix l'usuari
+                $existUser = $db->getUserBySocialId($user_profile->identifier);
+                if(!$existUser)
+                {
+                    $access = $adapter->getAccessToken();
+                    $newUser = array(
+                        'name' => $user_profile->displayName,
+                        'email' => $user_profile->email,
+                        'facebook_id' => $user_profile->identifier,
+                        'token' => $access->access_token
+                    );
+                    $done = $db->insertUser($newUser);
+                    if (!$done)
+                    {
+                        $app->redirect(urldecode($params['urlKO']));
+                    }
+                }
+                $urlOK = urldecode($params['urlOK']);
+                $parseUrl = parse_url($urlOK);
 
-    if(empty($user_profile)) {
-    	$app->redirect(urldecode($params['urlKO']));
-    }
-    else {
-    	$db = new DB();
-
-    	// Busquem si ja existeix l'usuari
-    	$existUser = $db->getUserBySocialId($user_profile->identifier);
-    	if(!$existUser) {
-	    	// Si no existeix
-	    	$newUser = array(
-	    		'name' => $user_profile->displayName,
-	    		'email' => $user_profile->email,
-	    		'facebook_id' => $user_profile->identifier,
-	    	);
-	    	$db->insertUser($newUser);
-	    	$existUser = $db->getUserBySocialId($user_profile->identifier);
-      }
-      if(empty($existUser)) {
-      	echo 'Sense Dades.';exit;
-      }
-
-      $urlOK = urldecode($params['urlOK']);
-	    $parseUrl = parse_url($urlOK);
-	 
-			if(isset($parseUrl['query'])) {
-				$urlOk .= '&';
-			}
-			else {
-				$urlOK .= '?';
-			}
-	    $app->redirect($urlOK .'id='. $existUser['id']);
-    }
+                if (isset($parseUrl['query']))
+                {
+                    $urlOk .= '&';
+                }
+                else
+                {
+                    $urlOK .= '?';
+                }
+                $app->redirect($urlOK .'id='. $existUser['id']);
+            }
+        }
+        else {
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(500);
+            $response = array(
+              'message' => 'Unknown provider',
+              'code' 		=> 500,
+            );
+            $app->response->body(json_encode($response));
+        }
 	});
 	
 	/**
