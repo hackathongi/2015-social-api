@@ -31,12 +31,10 @@ Parametres:
 
 
 Mètode: 	GET 
-URL: 		/friends/<provider>/<userId>/[userId2]
-Descripció: Retorna els amics d'un usuari. Si es donen dos ids, es retornen els amics en comú
+URL: 		/friends/<provider>
+Descripció: Retorna els amics de l'usuari loguejat que estan dins l'aplicació
 Parametres:
 			<provider> 	-> Xarxa social (Opcions: facebook, twitter, linkedin). *En la primera fase només facebook
-			<userId> 	-> Identificador de l'usuari
-			[userId2] 	-> Identificador del segon usuari amb qui trobar els amics en comú
 
 
 Mètode: 	POST 
