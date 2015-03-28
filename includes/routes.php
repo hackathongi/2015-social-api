@@ -36,36 +36,40 @@
 	/**
 	 * Login a facebook
 	 */
-	$app->get('/login/:provider', function ($provider) {
+	$app->get('/login/:provider', function ($provider) use ($app) {
 	  global $oauthConf;
 
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
-    //$user_profile = $adapter->getUserProfile();
+    $user_profile = $adapter->getUserProfile();
 
-
-    		echo '<pre>';
-    		print_r($adapter->getUserContacts());
-    		echo '</pre>';
-    		exit;
-    	
+    if(empty($user_profile)) {
+    	$app->response->headers->set('Content-Type', 'application/json');
+      $app->response->setStatus(401);
+      $app->response->body(json_encode());
+    }
+    else {
+      $app->response->headers->set('Content-Type', 'application/json');
+      $app->response->setStatus(200);
+      $app->response->body(json_encode($user_profile));
+    }
 
 	});
 	
 	/**
 	 * Tornar la info de l'usuari
 	 */
-	$app->get('/info/:provider/:userId', function ($provider, $userId) {});
+	$app->get('/info/:provider/:userId', function ($provider, $userId) use ($app){});
 
 	/**
 	 * Tornar els amics de l'usuari
 	 */
-	$app->get('/friends/:provider/:userId/:userIdRel', function ($provider, $userId, $userIdRel) {});
+	$app->get('/friends/:provider/:userId/:userIdRel', function ($provider, $userId, $userIdRel) use ($app){});
 
 	/**
 	 * Inserta la info a l'stream de lusuari
 	 */
-	$app->post('/publish/:provider/:userId', function ($provider, $userId) {
+	$app->post('/publish/:provider/:userId', function ($provider, $userId) use ($app){
 
 		$facebook = $hybridauth->authenticate( $provider );
    
@@ -81,4 +85,4 @@
 	/**
 	 * Envia missatges entre usuaris
 	 */
-	$app->post('/messages/:provider/:userId', function ($provider, $userId) {});
+	$app->post('/messages/:provider/:userId', function ($provider, $userId) use ($app){});
