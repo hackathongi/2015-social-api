@@ -145,10 +145,10 @@
         $facebook = $hybridauth->authenticate( $provider );
         $facebook->api()->api("/me/feed", "post", array(
             "message" => $messageValue,
-            "link"    => $linkValue
-            #"picture" => "http://www.mywebsite.com/path/to/an/image.jpg",
-            #"name"    => "My page name",
-            #"caption" => "And caption"
+            "link"    => urlencode($linkValue),
+            "picture" => "http://www.omicrono.com/wp-content/uploads/2014/06/cocacola.jpg",
+            "name"    => "My page name",
+            "caption" => "And caption"
         ));
     });
 
