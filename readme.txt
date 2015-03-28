@@ -39,6 +39,23 @@ Parametres:
 			<provider> 	-> Xarxa social (Opcions: facebook, twitter, linkedin). *En la primera fase només facebook
 
 
+Mètode: 	POST
+URL: 		/publish/<provider>/<userID>
+Descripció: Publica un missatge en el mur de l'usuari actual.
+Parametres:
+			GET:
+			<provider> 	-> Xarxa social (Opcions: facebook, twitter, linkedin). *En la primera fase només facebook
+			<userId> 	-> Identificador de l'usuari (NO ES FA SERVIR ARA)
+
+			POST:
+            <link>      -> url a compartir (obligatori)
+            <message>   -> missatge (opcional)
+            <picture>   -> url a la imatge del post (opcional)
+            <name>      -> nom del post, títol (es opcional)
+            <caption>   -> caption del post (opcional)
+
+            RETORN:
+            {"message":"OK","code":200}
 
 == NOT IMPLEMENTED ==
 
