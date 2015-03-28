@@ -81,7 +81,7 @@
                 {
                     $urlOK .= '?';
                 }
-                $app->redirect($urlOK .'id='. $existUser['id']);
+                $app->redirect($urlOK .'id='. $done);
             }
         }
         else {
@@ -205,7 +205,7 @@
         }
         
         
-        print_r($_SESSION);
+        
         exit;
         
         
