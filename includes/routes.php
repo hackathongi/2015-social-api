@@ -41,7 +41,12 @@
 
 	  $provider = 'Facebook';
 	  $params = $app->request()->params();
- 
+  
+ 		echo '<pre>';
+ 		print_r($params);
+ 		echo '</pre>';
+ 		exit;
+ 	
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
     $user_profile = $adapter->getUserProfile();
