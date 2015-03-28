@@ -7,6 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Slim' => array($vendorDir . '/slim/slim'),
-    'Medoo' => array($baseDir . '/lib/medoo'),
-    'Hybrid' => array($baseDir . '/lib/hybridauth'),
+    'Medoo' => array($vendorDir . '/medoo'),
+    'Hybrid' => array($vendorDir . '/hybridauth'),
 );
