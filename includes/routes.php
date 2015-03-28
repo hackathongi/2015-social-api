@@ -38,6 +38,7 @@
 	 */
 	$app->get('/login/:provider', function ($provider) use ($app) {
 	  global $oauthConf;
+	  $response = array();
 
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
@@ -46,12 +47,34 @@
     if(empty($user_profile)) {
     	$app->response->headers->set('Content-Type', 'application/json');
       $app->response->setStatus(401);
-      $app->response->body(json_encode());
+      $response = array(
+      	'message' => 'No conected',
+      	'code' 		=> 401,
+      );
+      $app->response->body(json_encode($response ));
     }
     else {
+    	$db = new DB();
+
+    	// Busquem si ja existeix l'usuari
+    	$existUser = $db->getUserBySocialId($user_profile->identifier);
+    	if(!$existUser) {
+	    	// Si no existeix
+	    	$newUser = array(
+	    		'name' => $user_profile->displayName,
+	    		'email' => $user_profile->email,
+	    		'facebook_id' => $user_profile->identifier,
+	    	);
+	    	$db->insertUser($newUser);
+      }
       $app->response->headers->set('Content-Type', 'application/json');
       $app->response->setStatus(200);
-      $app->response->body(json_encode($user_profile));
+
+      $response = array(
+      	'message' => 'User logued',
+      	'code' 		=> 200,
+      );
+      $app->response->body(json_encode($response ));
     }
 
 	});
