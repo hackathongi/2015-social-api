@@ -44,6 +44,7 @@
   
  		echo '<pre>';
  		print_r($params);
+ 		print_r($_GET);
  		echo '</pre>';
  		exit;
  	
