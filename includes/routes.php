@@ -38,6 +38,7 @@
 	 */
 	$app->get('/login/:provider', function ($provider) use ($app) {
         global $oauthConf;
+        $_SERVER['HTTP_REFERER'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'http://www.wallyjobs.com';
         if (is_allowed_provider($provider))
         {
             $params = $app->request()->params();
@@ -49,7 +50,7 @@
             $user_profile = $adapter->getUserProfile();
             if(empty($user_profile))
             {
-                $app->redirect(urldecode($params['urlKO']));
+                $app->redirect(urldecode(isset($params['urlKO']) ? $params['urlKO'] : $_SERVER['HTTP_REFERER']));
             }
             else
             {
@@ -64,7 +65,7 @@
                         'name' => $user_profile->displayName,
                         'email' => $user_profile->email,
                         'facebook_id' => $user_profile->identifier,
-                        'token' => $access->access_token
+                        'token' => $access['access_token']
                     );
                     $done = $db->insertUser($newUser);
                     if (!$done)
@@ -72,7 +73,7 @@
                         $app->redirect(urldecode($params['urlKO']));
                     }
                 }
-                $urlOK = urldecode($params['urlOK']);
+                $urlOK = urldecode(isset($params['urlOK']) ? $params['urlOK'] : $_SERVER['HTTP_REFERER']);
                 $parseUrl = parse_url($urlOK);
 
                 if (isset($parseUrl['query']))
@@ -177,10 +178,10 @@
     $app->get('/friends/:provider', function ($provider) use ($app){
         global $oauthConf;
         $hybridauth = new Hybrid_Auth( $oauthConf );
-        $facebook = $hybridauth->authenticate( $provider );
+        $adapter = $hybridauth->authenticate( $provider );
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->body(json_encode($facebook->getUserContacts()));
+        $app->response->body(json_encode($adapter->getUserContacts()));
     });
 
 	/**
@@ -191,6 +192,24 @@
         
         $db = new DB();
         $user = $db->getUserBySocialId($userId);
+        
+        $hybridauth = new Hybrid_Auth( $oauthConf );
+        $adapter = $hybridauth->authenticate( $provider );
+        
+        $db = new DB();
+        $user = $db->getUserBySocialId($userId);
+        $userRel = $db->getUserBySocialId($userIdRel);
+        if ($user && $userRel)
+        {
+            $response = $adapter->api()->api("/me/friends", "post", array(
+                "access_token" => $user['token']
+            ));
+            var_dump($response);
+        }
+        
+        
+        print_r($_SESSION);
+        exit;
         
         
         
