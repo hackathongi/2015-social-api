@@ -61,9 +61,9 @@ use Facebook\FacebookRequestException;
 
                 // Busquem si ja existeix l'usuari
                 $done = $db->getUserBySocialId($user_profile->identifier);
+                $access = $adapter->getAccessToken();
                 if(!$done)
                 {
-                    $access = $adapter->getAccessToken();
                     $newUser = array(
                         'name' => $user_profile->displayName,
                         'email' => $user_profile->email,
@@ -79,6 +79,7 @@ use Facebook\FacebookRequestException;
                 else
                 {
                     $done = $done['id'];
+                    $db->updateUser($done, array('token'=>$access['access_token']));
                 }
                 $urlOK = urldecode(isset($params['urlOK']) ? $params['urlOK'] : $_SERVER['HTTP_REFERER']);
                 $parseUrl = parse_url($urlOK);
@@ -198,8 +199,8 @@ use Facebook\FacebookRequestException;
         global $oauthConf;
         
         $db = new DB();
-        $user = $db->getUserBySocialId($userId);
-        $userRel = $db->getUserBySocialId($userIdRel);
+        $user = $db->getUser($userId);
+        $userRel = $db->getUser($userIdRel);
         
         if ($user && $userRel)
         {
@@ -238,6 +239,16 @@ use Facebook\FacebookRequestException;
                     unset($friends2[$F1->id]);
                 }
                 unset($friends1[$F1->id]);
+            }
+            
+            foreach ($mutual AS $k => $v)
+            {
+                $mutual[$k] = array(
+                    'identifier' => $v->id,
+                    'profileURL' => 'https://www.facebook.com/app_scoped_user_id/'.$v->id.'/',
+                    'photoURL' => 'https://graph.facebook.com/'.$v->id.'/picture?width=150&height=150',
+                    'displayName' => $v->name
+                );
             }
             
             //var_dump($mutual);
