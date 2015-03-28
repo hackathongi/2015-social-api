@@ -1,4 +1,10 @@
 <?php
+
+use Facebook\FacebookSession;
+use Facebook\FacebookRequest;
+use Facebook\GraphUser;
+use Facebook\FacebookRequestException;
+
 	/**
 	 * Tornar la info de l'usuari
 	 */
@@ -54,8 +60,8 @@
                 $db = new DB();
 
                 // Busquem si ja existeix l'usuari
-                $existUser = $db->getUserBySocialId($user_profile->identifier);
-                if(!$existUser)
+                $done = $db->getUserBySocialId($user_profile->identifier);
+                if(!$done)
                 {
                     $access = $adapter->getAccessToken();
                     $newUser = array(
@@ -69,6 +75,10 @@
                     {
                         $app->redirect(urldecode($params['urlKO']));
                     }
+                }
+                else
+                {
+                    $done = $done['id'];
                 }
                 $urlOK = urldecode(isset($params['urlOK']) ? $params['urlOK'] : $_SERVER['HTTP_REFERER']);
                 $parseUrl = parse_url($urlOK);
@@ -189,32 +199,61 @@
         
         $db = new DB();
         $user = $db->getUserBySocialId($userId);
-        
-        $hybridauth = new Hybrid_Auth( $oauthConf );
-        $adapter = $hybridauth->authenticate( $provider );
-        
-        $db = new DB();
-        $user = $db->getUserBySocialId($userId);
         $userRel = $db->getUserBySocialId($userIdRel);
+        
         if ($user && $userRel)
         {
-            $response = $adapter->api()->api("/me/friends", "post", array(
-                "access_token" => $user['token']
-            ));
-            var_dump($response);
+            $friends1 = array();
+            FacebookSession::setDefaultApplication('898845680138958','fcd7c90480cfcbe5cb5671fc5c9ff281');
+            $session = new FacebookSession($user['token']);
+            $friends = (new FacebookRequest(
+                $session, 'GET', '/me/friends'
+            ))->execute()->getGraphObject(GraphUser::className());
+            
+            $friends_a = $friends->asArray();
+            $friends1 = array();
+            foreach ($friends_a['data'] AS $k => $friend)
+            {
+                $friends1[$friend->id] = $friend;
+            }
+            
+            $session = new FacebookSession($userRel['token']);
+            $friends = (new FacebookRequest(
+                $session, 'GET', '/me/friends'
+            ))->execute()->getGraphObject(GraphUser::className());
+            
+            $friends_b = $friends->asArray();
+            $friends2 = array();
+            foreach ($friends_b['data'] AS $k => $friend)
+            {
+                $friends2[$friend->id] = $friend;
+            }
+            
+            $mutual = array();
+            foreach($friends1 as $F1)
+            {
+                if(isset($friends2[$F1->id]))
+                {
+                    $mutual[] = $F1;
+                    unset($friends2[$F1->id]);
+                }
+                unset($friends1[$F1->id]);
+            }
+            
+            //var_dump($mutual);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->body(json_encode($mutual));
         }
-        
-        
-        
-        exit;
-        
-        
-        
-        /*$hybridauth = new Hybrid_Auth( $oauthConf );
-        $facebook = $hybridauth->authenticate( $provider );
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->body(json_encode($facebook->getUserContacts()));*/
+        else {
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(500);
+            $response = array(
+              'message' => 'Users error',
+              'code' 		=> 500,
+            );
+            $app->response->body(json_encode($response));
+        }
     });
 
     /**
