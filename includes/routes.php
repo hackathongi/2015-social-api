@@ -5,9 +5,8 @@
 
 	$app->get('/', function () {
 		echo 'Social Api';
-/*
+?>
 <html xmlns:fb="https://www.facebook.com/2008/fbml">
-
 
 <head></head>
 <script src="http://connect.facebook.net/en_US/all.js"></script>
@@ -31,7 +30,7 @@
 <p id="profile_facebook"></p>
 </body>
 </html>
-*/
+<?php
 	});
 
 	/**
@@ -65,17 +64,21 @@
 	    	$db->insertUser($newUser);
 	    	$existUser = $db->getUserBySocialId($user_profile->identifier);
       }
+      if(empty($existUser)) {
+      	echo 'Sense Dades.';exit;
+      }
+
+      $urlOK = urldecode($params['urlOK']);
+	    $parseUrl = parse_url($urlOK);
+	 
+			if(isset($parseUrl['query'])) {
+				$urlOk .= '&';
+			}
+			else {
+				$urlOK .= '?';
+			}
+	    $app->redirect($urlOK .'id='. $existUser['id']);
     }
-    $urlOK = $params['urlOK'];
-    $parseUrl = parse_url($urlOK);
- 
-		if(isset($parseUrl['query'])) {
-			$urlOk .= '&';
-		}
-		else {
-			$urlOK .= '?';
-		}
-    $app->redirect($urlOK .'id='. $existUser['id']);
 	});
 	
 	/**
