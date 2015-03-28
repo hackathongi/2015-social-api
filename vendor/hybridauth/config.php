@@ -11,7 +11,7 @@
 
 return
 	array(
-		"base_url" => "http://apisocial.hackajob.com/vendor/hybridauth/",
+		"base_url" => "http://apisocial.wallyjobs.com/vendor/hybridauth/",
 
 		"providers" => array (
 			"Facebook" => array (
