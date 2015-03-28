@@ -10,6 +10,8 @@ Descripció: Demanar permís per la xarxa social
 Parametres:
 			<urlOK>		-> URL on es redirigeix l'usuari quan accepta la nostra aplicació. Retorna el paràmetre user_id.
 			<urlKO> 	-> URL on es redirigeix l'usuari quan no accepta la nostra aplicació
+			ATENCIO!!! les url s'han de passar codificades amb urlencode() amb la ruta la completa 
+			(p.ex: urlencode('http://www.google.com'))
 			
 
 
