@@ -8,12 +8,12 @@
   },
   "autoload": {
     "psr-0": {
-      "Hybrid": "lib/hybridauth/",
-      "Medoo": "lib/medoo/"
+      "Hybrid": "vendor/hybridauth/",
+      "Medoo": "vendor/medoo/"
     },
     "classmap":[
-      "lib/hybridauth/Hybrid",
-      "lib/medoo"
+      "vendor/hybridauth/Hybrid",
+      "vendor/medoo"
     ]
   }
 }

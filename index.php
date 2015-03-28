@@ -3,8 +3,8 @@
 	<body>
   <?php
 		// Crida a les configs de social
-    $oauthConf = dirname(__FILE__) . '/lib/hybridauth/config.php';
-    
+    $oauthConf = dirname(__FILE__) . '/vendor/hybridauth/config.php';
+
 		require_once(dirname(__FILE__) . '/vendor/autoload.php');
 		
 
