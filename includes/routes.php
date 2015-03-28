@@ -12,9 +12,9 @@
 	$app->get('/login/:provider', function ($provider) {
 	  echo "Hello, $provider";
 	  exit;
-	  $hybridauth = new Hybrid_Auth( $config );
-    $adapter = $hybridauth->authenticate( $provider );  
-    $user_profile = $adapter->getUserProfile(); 
+        $hybridauth = new Hybrid_Auth( $config );
+        $adapter = $hybridauth->authenticate( $provider );
+        $user_profile = $adapter->getUserProfile();
 	});
 	
 	/**
