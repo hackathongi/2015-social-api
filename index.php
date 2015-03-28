@@ -5,21 +5,8 @@ require_once dirname(__FILE__) . 'config.php';
 // Autoload
 require_once dirname(__FILE__) . '/vendor/autoload.php';
 
+// Ini de Slim
+$app = new \Slim\Slim();
 
-/*try{
-
-   $hybridauth = new Hybrid_Auth( $oauthConf );
-
-   $facebook = $hybridauth->authenticate( "Facebook" );
-
-   $user_profile = $facebook->getUserProfile();
-
-   echo "Hi there! " . $user_profile->displayName;
-
-   $facebook->setUserStatus( "Hello world!" );
-
-   $user_contacts = $facebook->getUserContacts(); 
-}
-catch( Exception $e ){
-   echo "Ooophs, we got an error: " . $e->getMessage();
-}*/
+// Includes de la plataforma
+require_once(dirname(__FILE__) . '/includes/routes.php');
