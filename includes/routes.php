@@ -42,9 +42,6 @@
         if (is_allowed_provider($provider))
         {
             $params = $app->request()->params();
-            if(!isset($params['urlOK'])) die("Missing urlOK parameter");
-            if(!isset($params['urlKO'])) die("Missing urlKO parameter");
-            
             $hybridauth = new Hybrid_Auth( $oauthConf );
             $adapter = $hybridauth->authenticate( $provider );
             $user_profile = $adapter->getUserProfile();
