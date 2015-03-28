@@ -5,10 +5,9 @@ API XARXES SOCIALS
 URL BASE: apisocial.wallyjobs.com
 
 Mètode: 	POST 
-URL: 		/login
+URL: 		/login/facebook
 Descripció: Demanar permís per la xarxa social
 Parametres:
-			<provider> 	-> Xarxa social on es fa login (Opcions: facebook, twitter, linkedin). *En la primera fase només facebook
 			<urlOK>		-> URL on es redirigeix l'usuari quan accepta la nostra aplicació. Retorna el paràmetre user_id.
 			<urlKO> 	-> URL on es redirigeix l'usuari quan no accepta la nostra aplicació
 			
