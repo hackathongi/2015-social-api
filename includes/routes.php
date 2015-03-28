@@ -98,21 +98,35 @@
 	 */
 	$app->get('/friends/:provider/:userId/:userIdRel', function ($provider, $userId, $userIdRel) use ($app){});
 
-	/**
-	 * Inserta la info a l'stream de lusuari
-	 */
-	$app->post('/publish/:provider/:userId', function ($provider, $userId) use ($app){
+    /**
+     * Inserta la info a l'stream de lusuari
+     */
+    $app->post('/publish/:provider/:userId', function ($provider, $userId) use ($app) {
+        global $oauthConf;
 
-		$facebook = $hybridauth->authenticate( $provider );
-   
-    $facebook->api()->api("/me/feed", "post", array(
-      "message" => "Hi there",
-      "picture" => "http://www.mywebsite.com/path/to/an/image.jpg",
-      "link"    => "http://www.mywebsite.com/path/to/a/page/",
-      "name"    => "My page name",
-      "caption" => "And caption"
-    ));
-	});
+        $linkValue = $app->request->post('link');
+
+        if(!$linkValue){
+            $linkValue = "#";
+            //TODO: raise error
+        }
+
+        $messageValue = $app->request->post('message');
+
+        if(!$messageValue){
+            $messageValue = "";
+        }
+
+        $hybridauth = new Hybrid_Auth( $oauthConf );
+        $facebook = $hybridauth->authenticate( $provider );
+        $facebook->api()->api("/me/feed", "post", array(
+            "message" => $messageValue,
+            "link"    => $linkValue
+            #"picture" => "http://www.mywebsite.com/path/to/an/image.jpg",
+            #"name"    => "My page name",
+            #"caption" => "And caption"
+        ));
+    });
 
 	/**
 	 * Envia missatges entre usuaris
