@@ -41,16 +41,14 @@
 	  global $oauthConf;
 
 	  $provider = 'Facebook';
-
-	  $urlOk = isset($_GET['urlOK']) ? $_GET['urlOK'] : '';
-	  $urlKo = isset($_GET['urlKO']) ? $_GET['urlKO'] : '';
-
+	  $params = $app->request()->params();
+ 
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
     $user_profile = $adapter->getUserProfile();
 
     if(empty($user_profile)) {
-    	$app->redirect($urlKo);
+    	$app->redirect($params['urlKO']);
     }
     else {
     	$db = new DB();
@@ -68,17 +66,16 @@
 	    	$existUser = $db->getUserBySocialId($user_profile->identifier);
       }
     }
-
-    $parseUrl = parse_url($urlOk);
+    $urlOK = $params['urlOK'];
+    $parseUrl = parse_url($urlOK);
  
 		if(isset($parseUrl['query'])) {
 			$urlOk .= '&';
 		}
 		else {
-			$urlOk .= '?';
+			$urlOK .= '?';
 		}
-
-    $app->redirect($urlOk .'id='. $existUser['id']);
+    $app->redirect($urlOK .'id='. $existUser['id']);
 	});
 	
 	/**
