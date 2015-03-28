@@ -1,4 +1,6 @@
 <?php
+  global $oauthConf;
+
 	/**
 	 * Tornar la info de l'usuari
 	 */
@@ -10,11 +12,19 @@
 	 * Login a facebook
 	 */
 	$app->get('/login/:provider', function ($provider) {
-	  echo "Hello, $provider";
-	  exit;
-        $hybridauth = new Hybrid_Auth( $config );
-        $adapter = $hybridauth->authenticate( $provider );
-        $user_profile = $adapter->getUserProfile();
+	  global $oauthConf;
+
+    $hybridauth = new Hybrid_Auth( $oauthConf );
+    $adapter = $hybridauth->authenticate( $provider );
+    $user_profile = $adapter->getUserProfile();
+
+
+    		echo '<pre>';
+    		print_r($user_profile);
+    		echo '</pre>';
+    		exit;
+    	
+
 	});
 	
 	/**
@@ -25,7 +35,7 @@
 	/**
 	 * Tornar els amics de l'usuari
 	 */
-	$app->get('/friends/:provider/:userId', function ($provider, $userId) {});
+	$app->get('/friends/:provider/:userId/:userIdRel', function ($provider, $userId, $userIdRel) {});
 
 	/**
 	 * Inserta la info a l'stream de lusuari
