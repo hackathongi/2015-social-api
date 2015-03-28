@@ -233,6 +233,20 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 	*/
 	function getUserContacts()
 	{
+
+
+/*
+	$apiCall = '?fields=context.fields%28all_mutual_friends.limit%28100%29%29';
+		$returnedContacts = array();
+		$pagedList = false;
+
+		do {
+			try{ 
+				//$response = $this->api->api('/me/friends' . $apiCall); 
+				$response = $this->api->api('10153247042582848' . $apiCall);
+
+ */
+
 		$apiCall = '?fields=link,name';
 		$returnedContacts = array();
 		$pagedList = false;

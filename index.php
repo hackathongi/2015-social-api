@@ -16,3 +16,4 @@ require_once(dirname(__FILE__) . '/includes/routes.php');
 
 // Run
 $app->run();
+?>
