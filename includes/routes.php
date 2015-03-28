@@ -4,7 +4,8 @@
 	 */
 
 	$app->get('/', function () {
-		?>
+		echo 'Social Api';
+/*
 <html xmlns:fb="https://www.facebook.com/2008/fbml">
 
 
@@ -30,7 +31,7 @@
 <p id="profile_facebook"></p>
 </body>
 </html>
-		<?php
+*/
 	});
 
 	/**
@@ -145,7 +146,7 @@
         $facebook = $hybridauth->authenticate( $provider );
         $facebook->api()->api("/me/feed", "post", array(
             "message" => $messageValue,
-            "link"    => urlencode($linkValue),
+            "link"    => $linkValue,
             "picture" => "http://www.omicrono.com/wp-content/uploads/2014/06/cocacola.jpg",
             "name"    => "My page name",
             "caption" => "And caption"

@@ -10,8 +10,14 @@
 //	HybridAuth Config file: http://hybridauth.sourceforge.net/userguide/Configuration.html
 // ----------------------------------------------------------------------------------------
 
+$ext = 'http://'; 
+if(isset($_SERVER['HTTPS'])){
+    if ($_SERVER["HTTPS"] == "on")  {
+        $ext = 'https://';
+    }
+}   
 return array(
-    'base_url' => 'http://apisocial.wallyjobs.com/vendor/hybridauth/',
+    'base_url' =>  $ext .'apisocial.wallyjobs.com/vendor/hybridauth/',
 
     'providers' => array (
         'Facebook' => array (
