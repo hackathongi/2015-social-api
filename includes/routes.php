@@ -5,9 +5,8 @@
 
 	$app->get('/', function () {
 		echo 'Social Api';
-/*
+?>
 <html xmlns:fb="https://www.facebook.com/2008/fbml">
-
 
 <head></head>
 <script src="http://connect.facebook.net/en_US/all.js"></script>
@@ -31,7 +30,7 @@
 <p id="profile_facebook"></p>
 </body>
 </html>
-*/
+<?php
 	});
 
 	/**
@@ -41,16 +40,14 @@
 	  global $oauthConf;
 
 	  $provider = 'Facebook';
-
-	  $urlOk = isset($_GET['urlOK']) ? $_GET['urlOK'] : '';
-	  $urlKo = isset($_GET['urlKO']) ? $_GET['urlKO'] : '';
-
+	  $params = $app->request()->params();
+ 
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
     $user_profile = $adapter->getUserProfile();
 
     if(empty($user_profile)) {
-    	$app->redirect($urlKo);
+    	$app->redirect(urldecode($params['urlKO']));
     }
     else {
     	$db = new DB();
@@ -67,18 +64,21 @@
 	    	$db->insertUser($newUser);
 	    	$existUser = $db->getUserBySocialId($user_profile->identifier);
       }
+      if(empty($existUser)) {
+      	echo 'Sense Dades.';exit;
+      }
+
+      $urlOK = urldecode($params['urlOK']);
+	    $parseUrl = parse_url($urlOK);
+	 
+			if(isset($parseUrl['query'])) {
+				$urlOk .= '&';
+			}
+			else {
+				$urlOK .= '?';
+			}
+	    $app->redirect($urlOK .'id='. $existUser['id']);
     }
-
-    $parseUrl = parse_url($urlOk);
- 
-		if(isset($parseUrl['query'])) {
-			$urlOk .= '&';
-		}
-		else {
-			$urlOk .= '?';
-		}
-
-    $app->redirect($urlOk .'id='. $existUser['id']);
 	});
 	
 	/**
