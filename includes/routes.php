@@ -82,15 +82,38 @@
 	/**
 	 * Tornar la info de l'usuari
 	 */
-	$app->get('/info/:provider/:userId', function ($provider, $userId)  use ($app){
-        
-        if (is_allowed_provider($provider)) {
-            $oauthConf = get_oauth_conf();
+	$app->get('/info/:provider/:userId', function ($provider, $user_id)  use ($app){
+        global $oauthConf;
+        if (is_allowed_provider($provider))
+        {
+            $db = new DB();
+            $user = $db->getUser($user_id);
+            if ($user)
+            {
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->body(json_encode($user));
+            }
+            else
+            {
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(500);
+                $response = array(
+                  'message' => 'Unknown user',
+                  'code' 		=> 500,
+                );
+                $app->response->body(json_encode($response));
+            }
         }
         else {
-            
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(500);
+            $response = array(
+              'message' => 'Unknown provider',
+              'code' 		=> 500,
+            );
+            $app->response->body(json_encode($response));
         }
-        exit;
     });
 
 	/**
