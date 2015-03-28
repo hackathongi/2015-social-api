@@ -1,6 +1,6 @@
 <?php
 // Configuration
-require_once dirname(__FILE__) . 'config.php';
+require_once dirname(__FILE__) . '/config.php';
 // Autoload
 require_once dirname(__FILE__) . '/vendor/autoload.php';
 

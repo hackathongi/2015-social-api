@@ -1,4 +1,10 @@
 <?php
+	/**
+	 * Tornar la info de l'usuari
+	 */
+	$app->get('/', function () {
+		echo 'API SOCIAL';
+	});
 
 	/**
 	 * Login a facebook
