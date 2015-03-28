@@ -38,20 +38,18 @@
 	 */
 	$app->get('/login/:provider', function ($provider) use ($app) {
 	  global $oauthConf;
-	  $response = array();
+
+	  $provider = 'Facebook';
+
+	  $urlOk = isset($_GET['urlOK']) ? $_GET['urlOK'] : '';
+	  $urlKo = isset($_GET['urlKO']) ? $_GET['urlKO'] : '';
 
     $hybridauth = new Hybrid_Auth( $oauthConf );
     $adapter = $hybridauth->authenticate( $provider );
     $user_profile = $adapter->getUserProfile();
 
     if(empty($user_profile)) {
-    	$app->response->headers->set('Content-Type', 'application/json');
-      $app->response->setStatus(401);
-      $response = array(
-      	'message' => 'No conected',
-      	'code' 		=> 401,
-      );
-      $app->response->body(json_encode($response ));
+    	$app->redirect($urlKo);
     }
     else {
     	$db = new DB();
@@ -67,16 +65,8 @@
 	    	);
 	    	$db->insertUser($newUser);
       }
-      $app->response->headers->set('Content-Type', 'application/json');
-      $app->response->setStatus(200);
-
-      $response = array(
-      	'message' => 'User logued',
-      	'code' 		=> 200,
-      );
-      $app->response->body(json_encode($response ));
     }
-
+    $app->redirect($urlOk);
 	});
 	
 	/**
