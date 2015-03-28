@@ -64,9 +64,20 @@
 	    		'facebook_id' => $user_profile->identifier,
 	    	);
 	    	$db->insertUser($newUser);
+	    	$existUser = $db->getUserBySocialId($user_profile->identifier);
       }
     }
-    $app->redirect($urlOk);
+
+    $parseUrl = parse_url($urlOk);
+ 
+		if(isset($parseUrl['query'])) {
+			$urlOk .= '&';
+		}
+		else {
+			$urlOk .= '?';
+		}
+
+    $app->redirect($urlOk .'id='. $existUser['id']);
 	});
 	
 	/**
