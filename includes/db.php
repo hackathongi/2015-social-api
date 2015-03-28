@@ -44,7 +44,7 @@ class DB
         return $this->database->get(
             static::TABLE_USER,
             ['id', 'name', 'email', 'token', 'role', 'facebook_id'],
-            ['id'=> intval($user_id)]
+            ['id'=> $user_id]
         );
     }
     
@@ -72,7 +72,7 @@ class DB
         return $this->database->get(
             static::TABLE_USER,
             ['id', 'name', 'email', 'token', 'role', 'facebook_id'],
-            ['facebook_id'=> intval($user_social_id)]
+            ['facebook_id'=> $user_social_id]
         );
     }
     
@@ -100,7 +100,7 @@ class DB
         return $this->database->update(
             static::TABLE_USER,
             $data,
-            ['id'=> intval($user_id)]
+            ['id'=> $user_id]
         );
     }
     
@@ -115,7 +115,7 @@ class DB
         return $this->database->update(
             static::TABLE_USER,
             $data,
-            ['facebook_id'=> intval($user_social_id)]
+            ['facebook_id'=> $user_social_id]
         );
     }
     
@@ -129,7 +129,7 @@ class DB
         return $this->database->get(
             static::TABLE_CONTACT,
             ['id', 'name', 'picture_url', 'facebook_id', 'user_id'],
-            ['id'=> intval($contact_id)]
+            ['id'=> $contact_id]
         );
     }
     
@@ -143,7 +143,7 @@ class DB
         return $this->database->select(
             static::TABLE_CONTACT,
             ['id', 'name', 'picture_url', 'facebook_id', 'user_id'],
-            ['user_id'=> intval($user_id)]
+            ['user_id'=> $user_id]
         );
     }
     
@@ -157,7 +157,7 @@ class DB
         return $this->database->select(
             static::TABLE_CONTACT,
             ['id', 'name', 'picture_url', 'facebook_id', 'user_id'],
-            ['facebook_id'=> intval($contact_social_id)]
+            ['facebook_id'=> $contact_social_id]
         );
     }
     
@@ -206,7 +206,7 @@ class DB
         return $this->database->update(
             static::TABLE_USER,
             $data,
-            ['id'=> intval($contact_id)]
+            ['id'=> $contact_id]
         );
     }
     
