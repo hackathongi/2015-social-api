@@ -9,4 +9,6 @@
 
 	// Includes de la plataforma
 	require_once(dirname(__FILE__) . '/includes/routes.php');
+	
+	$app->run();
 
