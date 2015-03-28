@@ -184,6 +184,28 @@
 
         if(!$messageValue){
             $messageValue = "";
+            //TODO: raise error
+        }
+
+        $pictureValue = $app->request->post('picture');
+
+        if(!$pictureValue){
+            $pictureValue = "";
+            //TODO: raise error
+        }
+
+        $nameValue = $app->request->post('name');
+
+        if(!$nameValue){
+            $nameValue = "";
+            //TODO: raise error
+        }
+
+        $captionValue = $app->request->post('caption');
+
+        if(!$captionValue){
+            $captionValue = "";
+            //TODO: raise error
         }
 
         $hybridauth = new Hybrid_Auth( $oauthConf );
@@ -191,10 +213,18 @@
         $facebook->api()->api("/me/feed", "post", array(
             "message" => $messageValue,
             "link"    => $linkValue,
-            "picture" => "http://www.omicrono.com/wp-content/uploads/2014/06/cocacola.jpg",
-            "name"    => "My page name",
-            "caption" => "And caption"
+            "picture" => $pictureValue,
+            "name"    => $nameValue,
+            "caption" => $captionValue
         ));
+
+        $app->response->setStatus(200);
+        $response = array(
+            'message' => 'OK',
+            'code' 		=> 200,
+        );
+        $app->response->body(json_encode($response));
+
     });
 
 	/**
